@@ -9,25 +9,14 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using magic.node;
+using magic.signals.services;
 using magic.signals.contracts;
 using magic.node.extensions.hyperlambda;
-using magic.http.services;
-using magic.signals.services;
-using magic.http.contracts;
 
 namespace magic.lambda.mssql.tests
 {
     public static class Common
     {
-        [Slot(Name = "foo")]
-        public class FooSlot : ISlot
-        {
-            public void Signal(ISignaler signaler, Node input)
-            {
-                input.Value = "OK";
-            }
-        }
-
         static public Node Evaluate(string hl)
         {
             var services = Initialize();
@@ -35,12 +24,6 @@ namespace magic.lambda.mssql.tests
             var signaler = services.GetService(typeof(ISignaler)) as ISignaler;
             signaler.Signal("eval", lambda);
             return lambda;
-        }
-
-        static public ISignaler GetSignaler()
-        {
-            var services = Initialize();
-            return services.GetService(typeof(ISignaler)) as ISignaler;
         }
 
         #region [ -- Private helper methods -- ]
@@ -51,7 +34,6 @@ namespace magic.lambda.mssql.tests
             var services = new ServiceCollection();
             services.AddTransient<IConfiguration>((svc) => configuration);
             services.AddTransient<ISignaler, Signaler>();
-            services.AddTransient<IHttpClient, HttpClient>();
             var types = new SignalsProvider(InstantiateAllTypes<ISlot>(services));
             services.AddTransient<ISignalsProvider>((svc) => types);
             var provider = services.BuildServiceProvider();

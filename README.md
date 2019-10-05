@@ -47,6 +47,14 @@ The above slots follows the same similar generic type of syntax, and can also ea
 arguably abstracting away the underlaying database provider more or less completely - Assuming you're only interested in CRUD
 operations, that are not too complex in nature.
 
+### Transaction slots
+
+In addition, this project also gives you 3 database transaction slots, that you can see below.
+
+* __[mysql.transaction.create]__ - Creates a new database transaction. Notice, unless explicitly committed, the transaction will be rolled back as your lambda goes out of scope.
+* __[mysql.transaction.commit]__ - Commits the top level transaction.
+* __[mysql.transaction.rollback]__ - Rolls back the top level transaction.
+
 ## License
 
 Magic is licensed as Affero GPL. This means that you can only use it to create Open Source solutions.

@@ -21,7 +21,7 @@ namespace magic.lambda.mssql.crud.builders
         /// <param name="node">Arguments used to semantically build your SQL.</param>
         /// <param name="signaler">Signaler used to invoke the original slot.</param>
         public SqlCreateBuilder(Node node, ISignaler signaler)
-            : base(node, signaler, "\"")
+            : base(node, "\"")
         { }
 
         /// <summary>

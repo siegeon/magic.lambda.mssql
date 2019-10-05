@@ -24,7 +24,7 @@ namespace magic.lambda.mssql.crud.builders
         /// <param name="node">Arguments to create your SQL from.</param>
         /// <param name="signaler">Signaler used to invoke your original slot.</param>
         public SqlReadBuilder(Node node, ISignaler signaler)
-            : base(node, signaler, "\"")
+            : base(node, "\"")
         { }
 
         /// <summary>

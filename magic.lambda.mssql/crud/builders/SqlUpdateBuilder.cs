@@ -20,7 +20,7 @@ namespace magic.lambda.mssql.crud.builders
         /// <param name="node">Arguments to create your statement from.</param>
         /// <param name="signaler">Signaler used to invoke the original slot.</param>
         public SqlUpdateBuilder(Node node, ISignaler signaler)
-            : base(node, signaler, "\"")
+            : base(node, "\"")
         { }
     }
 }
