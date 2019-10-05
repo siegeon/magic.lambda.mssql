@@ -12,16 +12,28 @@ using magic.signals.contracts;
 
 namespace magic.lambda.mssql
 {
+    /// <summary>
+    /// [mssql.connect] slot, for connecting to a MS SQL Server database instance.
+    /// </summary>
 	[Slot(Name = "mssql.connect")]
 	public class Connect : ISlot
 	{
         readonly IConfiguration _configuration;
 
+        /// <summary>
+        /// Creates a new instance of your type.
+        /// </summary>
+        /// <param name="configuration">Configuration for your application.</param>
         public Connect(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
+        /// <summary>
+        /// Implementation of your slot.
+        /// </summary>
+        /// <param name="signaler">Signaler used to raise the signal.</param>
+        /// <param name="input">Arguments to your slot.</param>
         public void Signal(ISignaler signaler, Node input)
 		{
             var connectionString = input.GetEx<string>();
@@ -42,7 +54,7 @@ namespace magic.lambda.mssql
 			using (var connection = new SqlConnection(connectionString))
 			{
 				connection.Open();
-                signaler.Scope("mssql-connection", connection, () =>
+                signaler.Scope("mssql.connect", connection, () =>
                 {
                     signaler.Signal("eval", input);
                 });

@@ -3,10 +3,8 @@
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
-using System;
 using System.Linq;
 using System.Data.SqlClient;
-using System.Collections.Generic;
 using magic.node;
 using magic.signals.contracts;
 using magic.lambda.mssql.utilities;
@@ -14,9 +12,17 @@ using magic.lambda.mssql.crud.builders;
 
 namespace magic.lambda.mysql.crud
 {
+    /// <summary>
+    /// [mssql.delete] slot for deleting a record in some table.
+    /// </summary>
     [Slot(Name = "mssql.delete")]
     public class Delete : ISlot
     {
+        /// <summary>
+        /// Implementation of your slot.
+        /// </summary>
+        /// <param name="signaler">Signaler used to raise the signal.</param>
+        /// <param name="input">Arguments to your slot.</param>
         public void Signal(ISignaler signaler, Node input)
         {
             var builder = new SqlDeleteBuilder(input, signaler);
@@ -32,7 +38,7 @@ namespace magic.lambda.mysql.crud
             }
 
             // Executing SQL, now parametrized.
-            Executor.Execute(sqlNode, signaler.Peek<SqlConnection>("mssql-connection"), signaler, (cmd) =>
+            Executor.Execute(sqlNode, signaler.Peek<SqlConnection>("mssql.connect"), (cmd) =>
             {
                 input.Value = cmd.ExecuteNonQuery();
                 input.Clear();

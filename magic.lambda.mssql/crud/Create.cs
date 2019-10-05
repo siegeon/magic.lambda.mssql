@@ -3,10 +3,8 @@
  * Licensed as Affero GPL unless an explicitly proprietary license has been obtained.
  */
 
-using System;
 using System.Linq;
 using System.Data.SqlClient;
-using System.Collections.Generic;
 using magic.node;
 using magic.signals.contracts;
 using magic.lambda.mssql.utilities;
@@ -14,9 +12,17 @@ using magic.lambda.mssql.crud.builders;
 
 namespace magic.lambda.mssql.crud
 {
+    /// <summary>
+    /// [mssql.create] slot for creating a new record in some table.
+    /// </summary>
     [Slot(Name = "mssql.create")]
     public class Create : ISlot
     {
+        /// <summary>
+        /// Implementation of your slot.
+        /// </summary>
+        /// <param name="signaler">Signaler used to raise the signal.</param>
+        /// <param name="input">Arguments to your slot.</param>
         public void Signal(ISignaler signaler, Node input)
         {
             var builder = new SqlCreateBuilder(input, signaler);
@@ -32,7 +38,7 @@ namespace magic.lambda.mssql.crud
             }
 
             // Executing SQL, now parametrized.
-            Executor.Execute(sqlNode, signaler.Peek<SqlConnection>("mssql-connection"), signaler, (cmd) =>
+            Executor.Execute(sqlNode, signaler.Peek<SqlConnection>("mssql.connect"), (cmd) =>
             {
                 // Notice, create SQL returns last inserted ID!
                 input.Value = cmd.ExecuteScalar();

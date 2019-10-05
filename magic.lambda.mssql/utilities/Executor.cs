@@ -11,12 +11,18 @@ using magic.signals.contracts;
 
 namespace magic.lambda.mssql.utilities
 {
+    /*
+     * Helper class for creating an SQL command.
+     */
 	public static class Executor
     {
+        /*
+         * Creates and parametrizes a SQL command, with the specified parameters,
+         * for then to invoke the specified callback with the command.
+         */
         public static void Execute(
             Node input,
             SqlConnection connection,
-            ISignaler signaler,
             Action<SqlCommand> functor)
         {
             using (var cmd = new SqlCommand(input.GetEx<string>(), connection))

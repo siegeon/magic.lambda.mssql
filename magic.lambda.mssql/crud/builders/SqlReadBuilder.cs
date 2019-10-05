@@ -13,13 +13,24 @@ using magic.signals.contracts;
 
 namespace magic.lambda.mssql.crud.builders
 {
+    /// <summary>
+    /// Builder for creating a read type of MS SQL Server statement,
+    /// </summary>
     public class SqlReadBuilder : com.SqlReadBuilder
     {
+        /// <summary>
+        /// Creates en instance of your type.
+        /// </summary>
+        /// <param name="node">Arguments to create your SQL from.</param>
+        /// <param name="signaler">Signaler used to invoke your original slot.</param>
         public SqlReadBuilder(Node node, ISignaler signaler)
             : base(node, signaler, "\"")
         { }
 
-
+        /// <summary>
+        /// Appends the "tail" parts of your SQL into the specified builder.
+        /// </summary>
+        /// <param name="builder">Builder where to put the tail.</param>
         protected override void GetTail(StringBuilder builder)
         {
             // Getting [order].
