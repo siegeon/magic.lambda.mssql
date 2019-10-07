@@ -16,7 +16,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/polterguy/magic.lambda.mssql.git</RepositoryUrl>
-    <PackageTags>mssql, multiplication, division, subtraction, addition, modulo, increment, decrement, hyperlambda</PackageTags>
+    <PackageTags>mssql, sql, data adapter</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
