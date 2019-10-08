@@ -46,6 +46,10 @@ namespace magic.lambda.mssql.crud.builders
                 var offsetValue = offsetNodes.First().GetEx<long>();
                 builder.Append(" offset " + offsetValue + " rows");
             }
+            else
+            {
+                builder.Append(" offset 0 rows");
+            }
 
             // Getting [limit].
             var limitNodes = Root.Children.Where(x => x.Name == "limit");
@@ -63,6 +67,11 @@ namespace magic.lambda.mssql.crud.builders
                 // Defaulting to 25 records, unless [limit] was explicitly given.
                 builder.Append(" fetch next 25 rows only");
             }
+        }
+
+        protected override void GetDefaultOrderBy(StringBuilder builder)
+        {
+            builder.Append(" order by (select null)");
         }
     }
 }
