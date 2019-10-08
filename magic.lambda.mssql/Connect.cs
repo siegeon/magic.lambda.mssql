@@ -5,6 +5,7 @@
 
 using System;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using magic.node;
 using magic.node.extensions;
@@ -16,7 +17,7 @@ namespace magic.lambda.mssql
     /// [mssql.connect] slot, for connecting to a MS SQL Server database instance.
     /// </summary>
 	[Slot(Name = "mssql.connect")]
-	public class Connect : ISlot
+	public class Connect : ISlot, ISlotAsync
 	{
         readonly IConfiguration _configuration;
 
@@ -36,6 +37,44 @@ namespace magic.lambda.mssql
         /// <param name="input">Arguments to your slot.</param>
         public void Signal(ISignaler signaler, Node input)
 		{
+            var connectionString = GetConnectionString(input);
+
+            using (var connection = new SqlConnection(connectionString))
+			{
+				connection.Open();
+                signaler.Scope("mssql.connect", connection, () =>
+                {
+                    signaler.Signal("eval", input);
+                });
+				input.Value = null;
+			}
+		}
+
+        /// <summary>
+        /// Implementation of your slot.
+        /// </summary>
+        /// <param name="signaler">Signaler used to raise the signal.</param>
+        /// <param name="input">Arguments to your slot.</param>
+        /// <returns>An awaitable task.</returns>
+        public async Task SignalAsync(ISignaler signaler, Node input)
+        {
+            var connectionString = GetConnectionString(input);
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+                signaler.Scope("mssql.connect", connection, () =>
+                {
+                    signaler.Signal("eval", input);
+                });
+                input.Value = null;
+            }
+        }
+
+        #region [ -- Private helper methods -- ]
+
+        string GetConnectionString(Node input)
+        {
             var connectionString = input.GetEx<string>();
 
             // Checking if this is a "generic connection string".
@@ -50,16 +89,9 @@ namespace magic.lambda.mssql
                 var generic = _configuration["databases:mssql:generic"];
                 connectionString = generic.Replace("{database}", connectionString);
             }
+            return connectionString;
+        }
 
-			using (var connection = new SqlConnection(connectionString))
-			{
-				connection.Open();
-                signaler.Scope("mssql.connect", connection, () =>
-                {
-                    signaler.Signal("eval", input);
-                });
-				input.Value = null;
-			}
-		}
-	}
+        #endregion
+    }
 }

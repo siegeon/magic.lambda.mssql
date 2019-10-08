@@ -4,6 +4,7 @@
  */
 
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 using magic.node;
 using magic.signals.contracts;
 using magic.lambda.mssql.utilities;
@@ -14,7 +15,7 @@ namespace magic.lambda.mssql
     /// [mssql.execute] slot for executing a non query type of SQL.
     /// </summary>
     [Slot(Name = "mssql.execute")]
-    public class Execute : ISlot
+    public class Execute : ISlot, ISlotAsync
     {
         /// <summary>
         /// Implementation of your slot.
@@ -26,6 +27,20 @@ namespace magic.lambda.mssql
             Executor.Execute(input, signaler.Peek<SqlConnection>("mssql.connect"), (cmd) =>
             {
                 input.Value = cmd.ExecuteNonQuery();
+            });
+        }
+
+        /// <summary>
+        /// Implementation of your slot.
+        /// </summary>
+        /// <param name="signaler">Signaler used to raise the signal.</param>
+        /// <param name="input">Arguments to your slot.</param>
+        /// <returns>An awaitable task.</returns>
+        public async Task SignalAsync(ISignaler signaler, Node input)
+        {
+            await Executor.ExecuteAsync(input, signaler.Peek<SqlConnection>("mssql.connect"), async (cmd) =>
+            {
+                input.Value = await cmd.ExecuteNonQueryAsync();
             });
         }
     }
