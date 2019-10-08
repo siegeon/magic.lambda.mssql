@@ -31,7 +31,11 @@ namespace magic.lambda.mssql.crud
                 return;
 
             // Executing SQL, now parametrized.
-            com.Executor.Execute(exe, signaler.Peek<SqlConnection>("mssql.connect"), (cmd) =>
+            com.Executor.Execute(
+                exe, 
+                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<com.Transaction>("mssql.transaction"),
+                (cmd) =>
             {
                 input.Value = cmd.ExecuteNonQuery();
                 input.Clear();
@@ -52,7 +56,11 @@ namespace magic.lambda.mssql.crud
                 return;
 
             // Executing SQL, now parametrized.
-            await com.Executor.ExecuteAsync(exe, signaler.Peek<SqlConnection>("mssql.connect"), async (cmd) =>
+            await com.Executor.ExecuteAsync(
+                exe, 
+                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<com.Transaction>("mssql.transaction"),
+                async (cmd) =>
             {
                 input.Value = await cmd.ExecuteNonQueryAsync();
                 input.Clear();

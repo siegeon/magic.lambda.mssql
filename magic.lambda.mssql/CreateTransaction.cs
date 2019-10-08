@@ -23,7 +23,7 @@ namespace magic.lambda.mysql
         /// <param name="input">Root node for invocation.</param>
 		public void Signal(ISignaler signaler, Node input)
 		{
-            signaler.Scope("mssql.transaction", new Transaction(signaler, signaler.Peek<DbConnection>("mysql.connect")), () =>
+            signaler.Scope("mssql.transaction", new Transaction(signaler, signaler.Peek<DbConnection>("mssql.connect")), () =>
             {
                 signaler.Signal("eval", input);
             });

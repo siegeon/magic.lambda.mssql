@@ -25,7 +25,11 @@ namespace magic.lambda.mssql
         /// <param name="input">Arguments to your slot.</param>
         public void Signal(ISignaler signaler, Node input)
         {
-            Executor.Execute(input, signaler.Peek<SqlConnection>("mssql.connect"), (cmd) =>
+            Executor.Execute(
+                input, 
+                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<Transaction>("mssql.transaction"),
+                (cmd) =>
             {
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -51,7 +55,11 @@ namespace magic.lambda.mssql
         /// <returns>An awaitable task.</returns>
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
-            await Executor.ExecuteAsync(input, signaler.Peek<SqlConnection>("mssql.connect"), async (cmd) =>
+            await Executor.ExecuteAsync(
+                input, 
+                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<Transaction>("mssql.transaction"),
+                async (cmd) =>
             {
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {

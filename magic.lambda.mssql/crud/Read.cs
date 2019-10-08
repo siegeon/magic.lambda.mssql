@@ -31,7 +31,11 @@ namespace magic.lambda.mssql.crud
                 return;
 
             // Executing SQL, now parametrized.
-            com.Executor.Execute(exe, signaler.Peek<SqlConnection>("mssql.connect"), (cmd) =>
+            com.Executor.Execute(
+                exe, 
+                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<com.Transaction>("mssql.transaction"),
+                (cmd) =>
             {
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -64,7 +68,11 @@ namespace magic.lambda.mssql.crud
                 return;
 
             // Executing SQL, now parametrized.
-            await com.Executor.ExecuteAsync(exe, signaler.Peek<SqlConnection>("mssql.connect"), async (cmd) =>
+            await com.Executor.ExecuteAsync(
+                exe, 
+                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<com.Transaction>("mssql.transaction"),
+                async (cmd) =>
             {
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
