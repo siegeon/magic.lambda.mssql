@@ -4,8 +4,8 @@
  */
 
 using magic.node;
+using magic.data.common;
 using magic.signals.contracts;
-using magic.lambda.mssql.utilities;
 
 namespace magic.lambda.mysql
 {
@@ -22,7 +22,7 @@ namespace magic.lambda.mysql
         /// <param name="input">Root node for invocation.</param>
 		public void Signal(ISignaler signaler, Node input)
 		{
-            signaler.Scope("mssql.transaction", new Transaction(signaler), () =>
+            signaler.Scope("mssql.transaction", new Transaction(signaler, "mssql.transaction"), () =>
             {
                 signaler.Signal("eval", input);
             });

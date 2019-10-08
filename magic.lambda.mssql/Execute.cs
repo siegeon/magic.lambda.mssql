@@ -6,8 +6,8 @@
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using magic.node;
+using magic.data.common;
 using magic.signals.contracts;
-using magic.lambda.mssql.utilities;
 
 namespace magic.lambda.mssql
 {
