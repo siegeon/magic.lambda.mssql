@@ -81,12 +81,12 @@ namespace magic.lambda.mssql
             if (connectionString.StartsWith("[", StringComparison.InvariantCulture) &&
                 connectionString.EndsWith("]", StringComparison.InvariantCulture))
             {
-                var generic = _configuration["databases:mssql:generic"];
+                var generic = _configuration["magic:databases:mssql:generic"];
                 connectionString = generic.Replace("{database}", connectionString.Substring(1, connectionString.Length - 2));
             }
             else if (!connectionString.Contains(";"))
             {
-                var generic = _configuration["databases:mssql:generic"];
+                var generic = _configuration["magic:databases:mssql:generic"];
                 connectionString = generic.Replace("{database}", connectionString);
             }
             return connectionString;
