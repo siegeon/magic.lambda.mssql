@@ -6,8 +6,8 @@
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using magic.node;
+using magic.data.common;
 using magic.signals.contracts;
-using magic.lambda.mssql.utilities;
 
 namespace magic.lambda.mssql
 {
@@ -25,7 +25,11 @@ namespace magic.lambda.mssql
         /// <param name="input">Arguments to your slot.</param>
         public void Signal(ISignaler signaler, Node input)
         {
-            Executor.Execute(input, signaler.Peek<SqlConnection>("mssql.connect"), (cmd) =>
+            Executor.Execute(
+                input, 
+                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<Transaction>("mssql.transaction"),
+                (cmd) =>
             {
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -34,7 +38,7 @@ namespace magic.lambda.mssql
                         var rowNode = new Node();
                         for (var idxCol = 0; idxCol < reader.FieldCount; idxCol++)
                         {
-                            var colNode = new Node(reader.GetName(idxCol), reader[idxCol]);
+                            var colNode = new Node(reader.GetName(idxCol), Converter.GetValue(reader[idxCol]));
                             rowNode.Add(colNode);
                         }
                         input.Add(rowNode);
@@ -51,7 +55,11 @@ namespace magic.lambda.mssql
         /// <returns>An awaitable task.</returns>
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
-            await Executor.ExecuteAsync(input, signaler.Peek<SqlConnection>("mssql.connect"), async (cmd) =>
+            await Executor.ExecuteAsync(
+                input, 
+                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<Transaction>("mssql.transaction"),
+                async (cmd) =>
             {
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
@@ -60,7 +68,7 @@ namespace magic.lambda.mssql
                         var rowNode = new Node();
                         for (var idxCol = 0; idxCol < reader.FieldCount; idxCol++)
                         {
-                            var colNode = new Node(reader.GetName(idxCol), reader[idxCol]);
+                            var colNode = new Node(reader.GetName(idxCol), Converter.GetValue(reader[idxCol]));
                             rowNode.Add(colNode);
                         }
                         input.Add(rowNode);

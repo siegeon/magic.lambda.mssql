@@ -18,7 +18,7 @@ namespace magic.lambda.mssql.tests
    generate:bool:true
    table:SomeTable");
             Assert.Empty(lambda.Children.First().Children);
-            Assert.Equal("select * from \"SomeTable\" fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace magic.lambda.mssql.tests
    limit:10
    offset:100");
             Assert.Empty(lambda.Children.First().Children);
-            Assert.Equal("select \"Foo\",\"Howdy\" from \"SomeTable\" offset 100 rows fetch next 10 rows only", lambda.Children.First().Value);
+            Assert.Equal("select \"Foo\",\"Howdy\" from \"SomeTable\" order by (select null) offset 100 rows fetch next 10 rows only", lambda.Children.First().Value);
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace magic.lambda.mssql.tests
          jo-dude:int:5
          like
             foo-bar:howdy%");
-            Assert.Equal("select * from \"SomeTable\" where (\"jo-dude\" = @0 and \"foo-bar\" like @1) fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" where (\"jo-dude\" = @0 and \"foo-bar\" like @1) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Equal(2, lambda.Children.First().Children.Count());
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal(5, lambda.Children.First().Children.First().Value);
@@ -65,7 +65,7 @@ namespace magic.lambda.mssql.tests
       or
          jo-dude:int:5
          foo:bar");
-            Assert.Equal("select * from \"SomeTable\" where (\"jo-dude\" = @0 or \"foo\" = @1) fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" where (\"jo-dude\" = @0 or \"foo\" = @1) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Equal(2, lambda.Children.First().Children.Count());
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal(5, lambda.Children.First().Children.First().Value);
@@ -87,7 +87,7 @@ namespace magic.lambda.mssql.tests
          or
             jo:decimal:5
             ho:bar");
-            Assert.Equal("select * from \"SomeTable\" where ((\"jo-dude\" = @0 or \"foo\" = @1) and (\"jo\" = @2 or \"ho\" = @3)) fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" where ((\"jo-dude\" = @0 or \"foo\" = @1) and (\"jo\" = @2 or \"ho\" = @3)) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Equal(4, lambda.Children.First().Children.Count());
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal(5, lambda.Children.First().Children.First().Value);
@@ -106,7 +106,7 @@ namespace magic.lambda.mssql.tests
    generate:bool:true
    table:SomeTable
    order:foo");
-            Assert.Equal("select * from \"SomeTable\" order by \"foo\" fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" order by \"foo\" offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Empty(lambda.Children.First().Children);
         }
 
@@ -118,7 +118,7 @@ namespace magic.lambda.mssql.tests
    table:SomeTable
    order:foo
    direction:desc");
-            Assert.Equal("select * from \"SomeTable\" order by \"foo\" desc fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" order by \"foo\" desc offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Empty(lambda.Children.First().Children);
         }
 
@@ -130,7 +130,7 @@ namespace magic.lambda.mssql.tests
    table:SomeTable
    order:foo
    direction:asc");
-            Assert.Equal("select * from \"SomeTable\" order by \"foo\" asc fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" order by \"foo\" asc offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Empty(lambda.Children.First().Children);
         }
 
@@ -144,7 +144,7 @@ namespace magic.lambda.mssql.tests
       and
          >
             id:int:3");
-            Assert.Equal("select * from \"SomeTable\" where (\"id\" > @0) fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" where (\"id\" > @0) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Single(lambda.Children.First().Children);
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal(3, lambda.Children.First().Children.First().Value);

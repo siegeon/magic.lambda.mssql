@@ -6,8 +6,8 @@
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using magic.node;
+using com = magic.data.common;
 using magic.signals.contracts;
-using magic.lambda.mssql.utilities;
 using magic.lambda.mssql.crud.builders;
 
 namespace magic.lambda.mssql.crud
@@ -26,11 +26,16 @@ namespace magic.lambda.mssql.crud
         public void Signal(ISignaler signaler, Node input)
         {
             // Parsing and creating SQL.
-            if (Common.ParseNode<SqlCreateBuilder>(signaler, input, out Node sqlNode))
+            var exe = com.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input);
+            if (exe == null)
                 return;
 
             // Executing SQL, now parametrized.
-            Executor.Execute(sqlNode, signaler.Peek<SqlConnection>("mssql.connect"), (cmd) =>
+            com.Executor.Execute(
+                exe, 
+                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<com.Transaction>("mssql.transaction"),
+                (cmd) =>
             {
                 // Notice, create SQL returns last inserted ID!
                 input.Value = cmd.ExecuteScalar();
@@ -47,11 +52,16 @@ namespace magic.lambda.mssql.crud
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
             // Parsing and creating SQL.
-            if (Common.ParseNode<SqlCreateBuilder>(signaler, input, out Node sqlNode))
+            var exe = com.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input);
+            if (exe == null)
                 return;
 
             // Executing SQL, now parametrized.
-            await Executor.ExecuteAsync(sqlNode, signaler.Peek<SqlConnection>("mssql.connect"), async (cmd) =>
+            await com.Executor.ExecuteAsync(
+                exe, 
+                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<com.Transaction>("mssql.transaction"),
+                async (cmd) =>
             {
                 // Notice, create SQL returns last inserted ID!
                 input.Value = await cmd.ExecuteScalarAsync();
