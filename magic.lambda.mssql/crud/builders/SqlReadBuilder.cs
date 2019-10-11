@@ -69,6 +69,10 @@ namespace magic.lambda.mssql.crud.builders
             }
         }
 
+        /// <summary>
+        /// Appends the default order by parts of the SQL statement.
+        /// </summary>
+        /// <param name="builder">Where to put the SQL.</param>
         protected override void GetDefaultOrderBy(StringBuilder builder)
         {
             builder.Append(" order by (select null)");
