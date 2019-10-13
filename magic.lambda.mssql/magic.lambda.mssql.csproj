@@ -7,12 +7,12 @@
     <Authors>Thomas Hansen</Authors>
     <Company>Thomas Hansen</Company>
     <Copyright>Thomas Hansen, thomas@gaiasoul.com</Copyright>
-    <Description>MS SQL Server helper slots for Magic.</Description>
+    <Description>MS SQL Server helper slots for Magic allowing you to easily connect to an SQL Server database, and read, update, delete and insert into your database.</Description>
     <PackageProjectUrl>https://github.com/polterguy/magic.lambda.mssql</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/polterguy/magic.lambda.mssql/master/LICENSE</PackageLicenseUrl>
     <PackageIconUrl>https://polterguy.github.io/favicon.ico</PackageIconUrl>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>1.2.2</PackageVersion>
+    <PackageVersion>2.0.0</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/polterguy/magic.lambda.mssql.git</RepositoryUrl>
@@ -26,8 +26,8 @@
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
-    <PackageReference Include="magic.node.extensions" Version="1.1.3" />
-    <PackageReference Include="magic.data.common" Version="1.1.9" />
+    <PackageReference Include="magic.node.extensions" Version="2.0.0" />
+    <PackageReference Include="magic.data.common" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
