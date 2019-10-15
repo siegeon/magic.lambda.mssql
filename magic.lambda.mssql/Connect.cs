@@ -16,9 +16,9 @@ namespace magic.lambda.mssql
     /// <summary>
     /// [mssql.connect] slot, for connecting to a MS SQL Server database instance.
     /// </summary>
-	[Slot(Name = "mssql.connect")]
-	public class Connect : ISlot, ISlotAsync
-	{
+    [Slot(Name = "mssql.connect")]
+    public class Connect : ISlot, ISlotAsync
+    {
         readonly IConfiguration _configuration;
 
         /// <summary>
@@ -36,19 +36,19 @@ namespace magic.lambda.mssql
         /// <param name="signaler">Signaler used to raise the signal.</param>
         /// <param name="input">Arguments to your slot.</param>
         public void Signal(ISignaler signaler, Node input)
-		{
+        {
             var connectionString = GetConnectionString(input);
 
             using (var connection = new SqlConnection(connectionString))
-			{
-				connection.Open();
+            {
+                connection.Open();
                 signaler.Scope("mssql.connect", connection, () =>
                 {
                     signaler.Signal("eval", input);
                 });
-				input.Value = null;
-			}
-		}
+                input.Value = null;
+            }
+        }
 
         /// <summary>
         /// Implementation of your slot.

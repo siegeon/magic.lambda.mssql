@@ -26,7 +26,7 @@ namespace magic.lambda.mssql
         public void Signal(ISignaler signaler, Node input)
         {
             Executor.Execute(
-                input, 
+                input,
                 signaler.Peek<SqlConnection>("mssql.connect"),
                 signaler.Peek<Transaction>("mssql.transaction"),
                 (cmd) =>
@@ -56,7 +56,7 @@ namespace magic.lambda.mssql
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
             await Executor.ExecuteAsync(
-                input, 
+                input,
                 signaler.Peek<SqlConnection>("mssql.connect"),
                 signaler.Peek<Transaction>("mssql.transaction"),
                 async (cmd) =>
