@@ -17,6 +17,7 @@ namespace magic.lambda.mssql
     /// [mssql.connect] slot, for connecting to a MS SQL Server database instance.
     /// </summary>
     [Slot(Name = "mssql.connect")]
+    [Slot(Name = "wait.mssql.connect")]
     public class Connect : ISlot, ISlotAsync
     {
         readonly IConfiguration _configuration;
@@ -63,9 +64,9 @@ namespace magic.lambda.mssql
             using (var connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
-                signaler.Scope("mssql.connect", connection, () =>
+                await signaler.ScopeAsync("mssql.connect", connection, async () =>
                 {
-                    signaler.Signal("eval", input);
+                    await signaler.SignalAsync("eval", input);
                 });
                 input.Value = null;
             }

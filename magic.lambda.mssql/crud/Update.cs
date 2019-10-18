@@ -16,6 +16,7 @@ namespace magic.lambda.mssql.crud
     /// [mssql.update] slot for updating a record in some table.
     /// </summary>
     [Slot(Name = "mssql.update")]
+    [Slot(Name = "wait.mssql.update")]
     public class Update : ISlot, ISlotAsync
     {
         /// <summary>
