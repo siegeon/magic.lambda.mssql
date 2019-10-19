@@ -213,6 +213,22 @@ namespace magic.lambda.mssql.tests
         }
 
         [Fact]
+        public void InsertSQL_03()
+        {
+            var lambda = Common.Evaluate(@"mssql.create
+   generate:bool:true
+   return-id:false
+   table:SomeTable
+   values
+      foo1:bar1
+      foo2");
+            Assert.Equal("insert into \"SomeTable\" (\"foo1\", \"foo2\") values (@0, null)", lambda.Children.First().Value);
+            Assert.Single(lambda.Children.First().Children);
+            Assert.Equal("@0", lambda.Children.First().Children.First().Name);
+            Assert.Equal("bar1", lambda.Children.First().Children.First().Value);
+        }
+
+        [Fact]
         public void InsertSQL_04()
         {
             var lambda = Common.Evaluate(@"mssql.create
