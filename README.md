@@ -21,7 +21,7 @@ mssql.read
 The above will result in the following SQL statement.
 
 ```sql
-select "Foo","Howdy" from "SomeTable"
+select "Foo", "Howdy" from "SomeTable"
 ```
 
 Where of course a large part of the point being that the structure for the above, is the exact same as the structure
@@ -45,7 +45,9 @@ These slots are listed below.
 
 The above slots follows the same similar generic type of syntax, and can also easily be interchanged with the MySQL counterparts,
 arguably abstracting away the underlaying database provider more or less completely - Assuming you're only interested in CRUD
-operations, that are not too complex in nature.
+operations, that are not too complex in nature. Notice, if you pass in a __[generate]__ argument, and sets it value to boolean _"true"_,
+the above four slots will not actually evaluate the SQL statement, but rather return it to caller, coupled with its arguments, allowing
+you to do whatever you wish with it yourself.
 
 ### Transaction slots
 
