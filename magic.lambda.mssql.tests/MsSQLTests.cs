@@ -187,7 +187,7 @@ namespace magic.lambda.mssql.tests
    values
       foo1:bar1
       foo2:int:5");
-            Assert.Equal("insert into \"SomeTable\" (\"foo1\", \"foo2\") output inserted.id values (@0, @1)", lambda.Children.First().Value);
+            Assert.Equal("insert into \"SomeTable\" (\"foo1\", \"foo2\") values (@0, @1); select scope_identity();", lambda.Children.First().Value);
             Assert.Equal(2, lambda.Children.First().Children.Count());
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal("bar1", lambda.Children.First().Children.First().Value);
@@ -204,7 +204,7 @@ namespace magic.lambda.mssql.tests
    values
       foo1:bar1
       foo2:int:5");
-            Assert.Equal("insert into \"SomeTable\" (\"foo1\", \"foo2\") output inserted.id values (@0, @1)", lambda.Children.First().Value);
+            Assert.Equal("insert into \"SomeTable\" (\"foo1\", \"foo2\") values (@0, @1); select scope_identity();", lambda.Children.First().Value);
             Assert.Equal(2, lambda.Children.First().Children.Count());
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal("bar1", lambda.Children.First().Children.First().Value);
@@ -237,7 +237,7 @@ namespace magic.lambda.mssql.tests
    values
       foo1:bar1
       foo2");
-            Assert.Equal("insert into \"SomeTable\" (\"foo1\", \"foo2\") output inserted.id values (@0, null)", lambda.Children.First().Value);
+            Assert.Equal("insert into \"SomeTable\" (\"foo1\", \"foo2\") values (@0, null); select scope_identity();", lambda.Children.First().Value);
             Assert.Single(lambda.Children.First().Children);
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal("bar1", lambda.Children.First().Children.First().Value);

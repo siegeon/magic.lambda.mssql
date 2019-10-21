@@ -25,12 +25,12 @@ namespace magic.lambda.mssql.crud.builders
         { }
 
         /// <summary>
-        /// Appends the "in between" parts of your SQL.
+        /// Makes sure we can select the scope identity for inserted record.
         /// </summary>
-        /// <param name="builder">Builder where to put the content.</param>
-        protected override void GetInBetween(StringBuilder builder)
+        /// <param name="builder">Where to put our SQL.</param>
+        protected override void GetTail(StringBuilder builder)
         {
-            builder.Append(" output inserted.id");
+            builder.Append("; select scope_identity();");
         }
     }
 }
