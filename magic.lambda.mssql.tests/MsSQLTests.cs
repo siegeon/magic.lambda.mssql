@@ -150,6 +150,21 @@ namespace magic.lambda.mssql.tests
         }
 
         [Fact]
+        public void SelectSQL_10()
+        {
+            var lambda = Common.Evaluate(@"mssql.read
+   generate:bool:true
+   table:SomeTable
+   where
+      and
+         id.>:int:3");
+            Assert.Equal("select * from \"SomeTable\" where (\"id\" > @0) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Single(lambda.Children.First().Children);
+            Assert.Equal("@0", lambda.Children.First().Children.First().Name);
+            Assert.Equal(3, lambda.Children.First().Children.First().Value);
+        }
+
+        [Fact]
         public void DeleteSQL_01()
         {
             var lambda = Common.Evaluate(@"mssql.delete

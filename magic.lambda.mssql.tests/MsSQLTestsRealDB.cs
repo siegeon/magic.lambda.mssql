@@ -24,6 +24,7 @@ CREATE TABLE [dbo].[Demo] (
 
  */
 
+#if RUN_REAL
 using System.Linq;
 using Xunit;
 using magic.node.extensions;
@@ -35,7 +36,6 @@ namespace magic.lambda.mssql.tests
     {
         // TODO: Modify this connection string if you intend to run these tests.
         const string _connection = "Server=localhost;Database=foo;Trusted_Connection=True;";
-#if RUN_REAL
 
         [Fact]
         public void SelectFromDemo_01()
@@ -157,6 +157,6 @@ mssql.connect:""{0}""
    mssql.scalar:""select count(*) from Demo where text = 'Non existing - yet does'""", _connection));
             Assert.True(lambda.Children.First().Children.Skip(1).First().Get<int>() > 0);
         }
-#endif
     }
 }
+#endif
