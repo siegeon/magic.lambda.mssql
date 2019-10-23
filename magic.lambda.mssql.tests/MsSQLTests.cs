@@ -157,7 +157,7 @@ namespace magic.lambda.mssql.tests
    table:SomeTable
    where
       and
-         id.>:int:3");
+         id.mt:int:3");
             Assert.Equal("select * from \"SomeTable\" where (\"id\" > @0) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Single(lambda.Children.First().Children);
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
