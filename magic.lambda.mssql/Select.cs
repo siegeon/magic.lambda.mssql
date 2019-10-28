@@ -16,6 +16,7 @@ namespace magic.lambda.mssql
     /// data rows to the caller.
     /// </summary>
     [Slot(Name = "mssql.select")]
+    [Slot(Name = "wait.mssql.select")]
     public class Select : ISlot, ISlotAsync
     {
         /// <summary>
