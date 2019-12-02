@@ -59,9 +59,7 @@ namespace magic.lambda.mssql
         /// <returns>An awaitable task.</returns>
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
-            var connectionString = GetConnectionString(input);
-
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(GetConnectionString(input)))
             {
                 await connection.OpenAsync();
                 await signaler.ScopeAsync("mssql.connect", connection, async () =>
@@ -76,10 +74,15 @@ namespace magic.lambda.mssql
 
         string GetConnectionString(Node input)
         {
-            var connectionString = input.GetEx<string>();
+            var connectionString = input.Value == null ? null : input.GetEx<string>();
 
             // Checking if this is a "generic connection string".
-            if (connectionString.StartsWith("[", StringComparison.InvariantCulture) &&
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                var generic = _configuration["magic:databases:mssql:generic"];
+                connectionString = generic.Replace("{database}", "master");
+            }
+            else if (connectionString.StartsWith("[", StringComparison.InvariantCulture) &&
                 connectionString.EndsWith("]", StringComparison.InvariantCulture))
             {
                 var generic = _configuration["magic:databases:mssql:generic"];
