@@ -8,6 +8,7 @@ using magic.node;
 using magic.data.common;
 using magic.signals.contracts;
 using System.Threading.Tasks;
+using magic.lambda.mssql.helpers;
 
 namespace magic.lambda.mysql
 {
@@ -25,10 +26,10 @@ namespace magic.lambda.mysql
         /// <param name="input">Root node for invocation.</param>
         public void Signal(ISignaler signaler, Node input)
         {
-            signaler.Scope("mssql.transaction", new Transaction(signaler, signaler.Peek<DbConnection>("mssql.connect")), () =>
-            {
-                signaler.Signal("eval", input);
-            });
+            signaler.Scope(
+                "mssql.transaction",
+                new Transaction(signaler, signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection),
+                () => signaler.Signal("eval", input));
         }
 
         /// <summary>
@@ -39,10 +40,10 @@ namespace magic.lambda.mysql
         /// <returns>An awaitable task.</returns>
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
-            await signaler.ScopeAsync("mssql.transaction", new Transaction(signaler, signaler.Peek<DbConnection>("mssql.connect")), async () =>
-            {
-                await signaler.SignalAsync("eval", input);
-            });
+            await signaler.ScopeAsync(
+                "mssql.transaction",
+                new Transaction(signaler, signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection),
+                async () => await signaler.SignalAsync("eval", input));
         }
     }
 }

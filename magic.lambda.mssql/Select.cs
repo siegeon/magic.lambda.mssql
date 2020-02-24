@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using magic.node;
 using magic.data.common;
 using magic.signals.contracts;
+using magic.lambda.mssql.helpers;
 
 namespace magic.lambda.mssql
 {
@@ -28,7 +29,7 @@ namespace magic.lambda.mssql
         {
             Executor.Execute(
                 input,
-                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
                 signaler.Peek<Transaction>("mssql.transaction"),
                 (cmd) =>
             {
@@ -58,7 +59,7 @@ namespace magic.lambda.mssql
         {
             await Executor.ExecuteAsync(
                 input,
-                signaler.Peek<SqlConnection>("mssql.connect"),
+                signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
                 signaler.Peek<Transaction>("mssql.transaction"),
                 async (cmd) =>
             {

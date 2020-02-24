@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using magic.node;
 using magic.node.extensions;
 using magic.signals.contracts;
+using magic.lambda.mssql.helpers;
 
 namespace magic.lambda.mssql
 {
@@ -40,13 +41,11 @@ namespace magic.lambda.mssql
         {
             var connectionString = GetConnectionString(input);
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnectionWrapper(GetConnectionString(input)))
             {
-                connection.Open();
-                signaler.Scope("mssql.connect", connection, () =>
-                {
-                    signaler.Signal("eval", input);
-                });
+                signaler.Scope(
+                    "mssql.connect",
+                    connection, () => signaler.Signal("eval", input));
                 input.Value = null;
             }
         }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using magic.node;
 using magic.node.extensions;
 using magic.signals.contracts;
+using magic.lambda.mssql.helpers;
 
 namespace magic.lambda.mssql
 {
@@ -30,7 +31,7 @@ namespace magic.lambda.mssql
         /// <param name="input">Arguments to your slot.</param>
         public void Signal(ISignaler signaler, Node input)
         {
-            var connection = signaler.Peek<SqlConnection>("mssql.connect");
+            var connection = signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection;
             foreach (var idxBatch in GetBatches(input.GetEx<string>()))
             {
                 using (var cmd = connection.CreateCommand())
@@ -54,7 +55,7 @@ namespace magic.lambda.mssql
         /// <returns>An awaitable task.</returns>
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
-            var connection = signaler.Peek<SqlConnection>("mssql.connect");
+            var connection = signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection;
             foreach (var idxBatch in GetBatches(input.GetEx<string>()))
             {
                 using (var cmd = connection.CreateCommand())
