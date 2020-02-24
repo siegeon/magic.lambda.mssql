@@ -61,10 +61,10 @@ namespace magic.lambda.mssql
             using (var connection = new SqlConnection(GetConnectionString(input)))
             {
                 await connection.OpenAsync();
-                await signaler.ScopeAsync("mssql.connect", connection, async () =>
-                {
-                    await signaler.SignalAsync("eval", input);
-                });
+                await signaler.ScopeAsync(
+                    "mssql.connect",
+                    connection,
+                    async () => await signaler.SignalAsync("wait.eval", input));
                 input.Value = null;
             }
         }
