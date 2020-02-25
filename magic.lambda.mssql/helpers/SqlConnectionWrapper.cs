@@ -14,22 +14,18 @@ namespace magic.lambda.mssql.helpers
 
         public SqlConnectionWrapper(string connectionString)
         {
-            _connection = new Lazy<SqlConnection>(() => new SqlConnection(connectionString));
+            _connection = new Lazy<SqlConnection>(() =>
+            {
+                var connection = new SqlConnection(connectionString);
+                connection.Open();
+                return connection;
+            });
         }
 
         /*
          * Property to retrieve underlying MySQL connection.
          */
-        public SqlConnection Connection
-        {
-            get
-            {
-                if (!_connection.IsValueCreated)
-                    _connection.Value.Open();
-
-                return _connection.Value;
-            }
-        }
+        public SqlConnection Connection => _connection.Value;
 
         public void Dispose()
         {
