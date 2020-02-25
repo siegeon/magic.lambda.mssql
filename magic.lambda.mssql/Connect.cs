@@ -58,9 +58,8 @@ namespace magic.lambda.mssql
         /// <returns>An awaitable task.</returns>
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
-            using (var connection = new SqlConnection(GetConnectionString(input)))
+            using (var connection = new SqlConnectionWrapper(GetConnectionString(input)))
             {
-                await connection.OpenAsync();
                 await signaler.ScopeAsync(
                     "mssql.connect",
                     connection,
