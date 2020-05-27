@@ -3,7 +3,6 @@
  * See the enclosed LICENSE file for details.
  */
 
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using magic.node;
 using com = magic.data.common;

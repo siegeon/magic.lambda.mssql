@@ -4,7 +4,6 @@
  */
 
 using System.Linq;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using magic.node;
 using magic.node.extensions;

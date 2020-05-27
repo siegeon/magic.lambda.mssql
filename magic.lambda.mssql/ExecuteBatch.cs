@@ -4,7 +4,6 @@
  */
 
 using System.Text;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using magic.node;

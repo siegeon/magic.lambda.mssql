@@ -6,66 +6,52 @@
 These are the MS SQL Server data adapters for [Magic](https://github.com/polterguy/magic). They allow you to provide a semantic
 lambda strucutre to its slots, which in turn will dynamically create a MS SQL dialectic SQL statement for you, for all basic
 types of SQL statements. In addition, it provides slots to open a MS SQL database connection, and such, to allow you to
-declare your own SQL statements, to be executed towards a MS SQL database. An example of usage can be found below in
-Hyperlambda format.
+declare your own SQL statements, to be executed towards a MS SQL database. Slots this project encapsulates are as follows.
+
+* __[mssql.connect]__ - Connects to a database, either taking an entire connection string, or a reference to a configuration connection string.
+* __[mssql.create]__ - Creates a single redorc in the specified table.
+* __[mssql.delete]__ - Deletes a single record in the specified table.
+* __[mssql.read]__ - Reads multiple records from the specified table.
+* __[mssql.update]__ - Updates a single record in the specified table.
+* __[mssql.select]__ - Executes an arbitrary SQL statement, and returns results of reader as lambda object to caller.
+* __[mssql.scalar]__ - Executes an arbitrary SQL statement, and returns the result as a scalar value to caller.
+* __[mssql.execute]__ - Executes an aribitrary SQL statement.
+* __[mssql.execute-batch]__ - Executes a _"batch"_ of SQL statements, where each statement is separated by the word _"GO"_.
+* __[mssql.transaction.create]__ - Creates a new transaction, that will be explicitly rolled back as execution leaves scope, unless __[mssql.transaction.commit]__ is explicitly called before leaving scope.
+* __[mssql.transaction.commit]__ - Explicitly commits an open transaction.
+* __[mssql.transaction.rollback]__ - Explicitly rolls back an open transaction.
+
+## mssql.read
+
+This event allows you to read records in CRUD style, implying you don't need to create your own SQL, but the slot will automatically
+create your SQL for you, avoding things such as SQL insertion attacks automatically for you, etc.
 
 ```
-mssql.read
-   generate:bool:true
-   table:SomeTable
-   columns
-      Foo:bar
-      Howdy:World
+/*
+ * Connecting to Northwind database
+ */
+mssql.connect:[Northwind]
+
+   /*
+    * Selecting only ContactName from Customers table
+    */
+   mssql.read
+      table:Customers
+      columns
+         ContactName
 ```
 
-The above will result in the following SQL statement.
-
-```sql
-select "Foo", "Howdy" from "SomeTable"
-```
-
-Where of course a large part of the point being that the structure for the above, is the exact same as the structure
-for creating a similar MySQL SQL statement, except with a different slot name.
-
-Below is a list of the slots provided by this project.
-
-* __[mssql.connect]__ - Connects to a MS SQL database.
-* __[mssql.execute]__ - Executes some SQL towards the currently _"top level"_ open MS SQL database connection as `ExecuteNonQuery`.
-* __[mssql.scalar]__ - Executes some SQL towards the currently _"top level"_ open MS SQL database connection as `ExecuteScalar`.
-* __[mssql.select]__ - Executes some SQL towards the currently _"top level"_ open MS SQL database connection as `ExecuteRead` and returns a node structure representing its result.
-
-In addition to the above _"low level"_ slots, there are also some slightly more _"high level slots"_, allowing you to think rather in terms 
-of generic CRUD arguments, that does not require you to supply SQL, but rather a syntax tree, such as the code example above is an example of.
-These slots are listed below.
-
-* __[mssql.create]__ - Create from CRUD
-* __[mssql.delete]__ - Delete from CRUD
-* __[mssql.read]__ - Read from CRUD
-* __[mssql.update]__ - Update from CRUD
-
-The above slots follows the same similar generic type of syntax, and can also easily be interchanged with the MySQL counterparts,
-arguably abstracting away the underlaying database provider more or less completely - Assuming you're only interested in CRUD
-operations, that are not too complex in nature. Notice, if you pass in a __[generate]__ argument, and sets it value to boolean _"true"_,
-the above four slots will not actually evaluate the SQL statement, but rather return it to caller, coupled with its arguments, allowing
-you to do whatever you wish with it yourself.
-
-## Transaction slots
-
-In addition, this project also gives you 3 database transaction slots, that you can see below.
-
-* __[mysql.transaction.create]__ - Creates a new database transaction. Notice, unless explicitly committed, the transaction will be rolled back as your lambda goes out of scope.
-* __[mysql.transaction.commit]__ - Commits the top level transaction.
-* __[mysql.transaction.rollback]__ - Rolls back the top level transaction.
+Notice, if you want to inspect the SQL that is generated, you can pass in **[generate]** and set its value to boolean true.
 
 ## Conditional select, update, delete
 
-The __[mysql.delete]__, __[mysql.read]__ and __[mysql.update]__ slots can be given relatively complex where conditions, where you apply
+The __[mssql.delete]__, __[mssql.read]__ and __[mssql.update]__ slots can be given relatively complex where conditions, where you apply
 conditions to these as a __[where]__ node. This will become a part of the SQL _"where"_ clause, where each condition by default will
 be _"AND'ed"_ together, but this too can be changed by adding YALOA that declares your logical operator. For instance, to select
 all records that have a `value` of _5_ and an `content` of _"foo"_ you can do something like the following
 
 ```
-mysql.read
+mssql.read
    table:SomeTable
    where
       value:int:5
@@ -77,7 +63,7 @@ a logical operator to it, to change it to becoming an _"OR"_ SQL where clause, b
 the values, such as the following illustrates.
 
 ```
-mysql.read
+mssql.read
    table:SomeTable
    where
       or
@@ -156,8 +142,8 @@ of previous said words, becomes the equivalent combinatory operator.
 
 Although most of Magic's source code is publicly available, Magic is _not_ Open Source or Free Software.
 You have to obtain a valid license key to install it in production, and I normally charge a fee for such a
-key. You can [obtain a license key here](https://gaiasoul.com/license-magic/).
+key. You can [obtain a license key here](https://servergardens.com/buy/).
 Notice, 5 hours after you put Magic into production, it will stop functioning, unless you have a valid
 license for it.
 
-* [Get licensed](https://gaiasoul.com/license-magic/)
+* [Get licensed](https://servergardens.com/buy/)
