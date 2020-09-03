@@ -41,7 +41,7 @@ namespace magic.lambda.mssql.crud.builders
             {
                 // Sanity checking.
                 if (offsetNodes.Count() > 1)
-                    throw new ApplicationException($"syntax error in '{GetType().FullName}', too many [offset] nodes");
+                    throw new ArgumentException($"syntax error in '{GetType().FullName}', too many [offset] nodes");
 
                 var offsetValue = offsetNodes.First().GetEx<long>();
                 builder.Append(" offset " + offsetValue + " rows");
@@ -57,7 +57,7 @@ namespace magic.lambda.mssql.crud.builders
             {
                 // Sanity checking.
                 if (limitNodes.Count() > 1)
-                    throw new ApplicationException($"syntax error in '{GetType().FullName}', too many [limit] nodes");
+                    throw new ArgumentException($"syntax error in '{GetType().FullName}', too many [limit] nodes");
 
                 var limitValue = limitNodes.First().GetEx<long>();
                 builder.Append(" fetch next " + limitValue + " rows only");
