@@ -28,7 +28,7 @@ namespace magic.lambda.mssql
         /// <param name="configuration">Configuration for your application.</param>
         public Connect(IConfiguration configuration)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _configuration = configuration;
         }
 
         /// <summary>
