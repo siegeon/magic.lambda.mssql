@@ -27,7 +27,7 @@ namespace magic.lambda.mssql.crud
         public void Signal(ISignaler signaler, Node input)
         {
             // Parsing and creating SQL.
-            var exe = com.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
+            var exe = com.helpers.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
             if (exe == null)
                 return;
 
@@ -52,7 +52,7 @@ namespace magic.lambda.mssql.crud
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
             // Parsing and creating SQL.
-            var exe = com.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
+            var exe = com.helpers.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
             if (exe == null)
                 return;
 

@@ -8,8 +8,8 @@ using System.Linq;
 using System.Text;
 using magic.node;
 using magic.node.extensions;
-using com = magic.data.common;
 using magic.signals.contracts;
+using com = magic.data.common;
 
 namespace magic.lambda.mssql.crud.builders
 {
@@ -60,7 +60,8 @@ namespace magic.lambda.mssql.crud.builders
                     throw new ArgumentException($"syntax error in '{GetType().FullName}', too many [limit] nodes");
 
                 var limitValue = limitNodes.First().GetEx<long>();
-                builder.Append(" fetch next " + limitValue + " rows only");
+                if (limitValue > -1)
+                    builder.Append(" fetch next " + limitValue + " rows only");
             }
             else
             {

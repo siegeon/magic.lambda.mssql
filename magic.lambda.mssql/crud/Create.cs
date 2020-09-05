@@ -37,8 +37,8 @@ namespace magic.lambda.mssql.crud
 
             // Parsing and creating SQL.
             var exe = returnId ?
-                com.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
-                com.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
+                com.helpers.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
+                com.helpers.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
 
             /*
              * If the parsing process doesn't return a node, we're not supposed
@@ -89,8 +89,8 @@ namespace magic.lambda.mssql.crud
 
             // Parsing and creating SQL.
             var exe = returnId ?
-                com.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
-                com.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
+                com.helpers.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
+                com.helpers.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
 
             /*
              * If the parsing process doesn't return a node, we're not supposed
