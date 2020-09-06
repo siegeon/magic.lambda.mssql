@@ -80,7 +80,7 @@ namespace magic.lambda.mssql
             var builder = new StringBuilder();
             foreach (var idxLine in lines)
             {
-                if (idxLine == "GO")
+                if (idxLine.ToUpperInvariant() == "GO")
                 {
                     yield return builder.ToString();
                     builder.Clear();
