@@ -38,8 +38,6 @@ namespace magic.lambda.mssql
         /// <param name="input">Arguments to your slot.</param>
         public void Signal(ISignaler signaler, Node input)
         {
-            var connectionString = GetConnectionString(input);
-
             using (var connection = new SqlConnectionWrapper(GetConnectionString(input)))
             {
                 signaler.Scope(

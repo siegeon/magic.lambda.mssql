@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace magic.lambda.mssql.helpers
 {
-    internal class SqlConnectionWrapper : IDisposable
+    internal sealed class SqlConnectionWrapper : IDisposable
     {
         readonly Lazy<SqlConnection> _connection;
 
