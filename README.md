@@ -34,17 +34,25 @@ having to change it in any ways.
 
 All of these slots have the _exact same syntax_ for all supported data adapters, which you can read about in the
 link below. Just make sure you start out your CRUD slot invocations with `mssql.` instead of `sql.` to use
-them towards a Microsoft SQL Server database. You will also need to open a database connection before you invoke these slots,
-unless you're only interested in generating its specific SQL command text, and not actually execute the SQL.
+them towards a Microsoft SQL Server database. You will also need to open a database connection before you invoke
+these slots, unless you're only interested in generating its specific SQL command text, and not actually execute
+the SQL.
 
-* [Magic Data Common](https://github.com/polterguy/magic.lambda.mysql)
+* [Magic Data Common](https://github.com/polterguy/magic.data.common)
+
+**Important!** You should prefer these CRUD slots, since they completely abstract away your underlaying
+database vendor's specific SQL syntax, overriding the SQL generation, such that you don't create yourself
+a lockin towards a single database vendor, and their specific SQL syntax in any ways.
+
+In addition, these slots can be semantically traversed, allowing you to for instance find all files
+that somehow retrieves data from some specific table, by introspecting your Hyperlambda files, etc.
+These slots are _extremely_ powerful in nature, once you've gotten used to their nature.
 
 ## [mssql.connect]
 
 This slot will open a database connection for you. You can pass in a complete connection string (not recommended),
-or only the database name if you wish. If you pass in only the database name, the generic connection string for Microsoft
-SQL Server from your _"appsettings.json"_ file will be used, substituting its `{database}` parts with the database of
-your choice.
+or only the database name if you wish. If you pass in only the database name, the generic connection string for MS SQL
+from your _"appsettings.json"_ file will be used, substituting its `{database}` parts with the database of your choice.
 
 Inside of this, which actually is a lambda **[eval]** invocation, you can use any of the other slots, requiring
 an existing and open database connection to function. You can see an example below.
@@ -61,13 +69,82 @@ This slot allows you to pass in any arbitrary SQL you wish, and it will evaluate
 all records as a lambda object. You can find an example below.
 
 ```
-mysql.connect:northwind
-   mysql.select:select top 100 * from customers
+mssql.connect:sakila
+   mssql.select:select top 10 first_name, last_name from customers
 ```
 
-Notice, this slot requires Microsoft SQL server syntax type of SQL, and will not in any ways transpile towards
-your specific underlaying database type. If you can, you should rather use **[mssql.read]** for instance, to
-avoid tying yourself down to a specific database vendor's SQL dialect.
+Assuming you have the _"northwind"_ database from Microsoft installed in your database, the above
+Hyperlambda will return the first 10 customers from your database.
+
+**Notice** - This slot requires MS SQL syntax type of SQL, and will not in any ways transpile towards your specific underlaying
+database type. If you can, you should rather use **[mssql.read]** for instance, to avoid tying yourself down to a
+specific database vendor's SQL dialect.
+
+## [mssql.scalar]
+
+This slot is similar to the above select slot, but will only return one value, as the value of its node after
+execution, and is typically used for aggregate results. You can see an example below.
+
+```
+mssql.connect:northwind
+   mssql.scalar:select count(*) from customers
+```
+
+After execution, your result will resemble the following.
+
+```
+mssql.connect
+   mssql.scalar:long:100
+```
+
+## [mssql.execute]
+
+This slot should be used if you don't expect any type of result at all, such as in for instance delete or update
+invocations, where you don't care about the result of the operation. You can find an example below.
+
+```
+mssql.connect:northwind
+
+   // Notice, will throw! (hopefully!)
+   mssql.scalar:delete from non_existing_table
+```
+
+## Database transactions
+
+Although you should be careful with database transactions, sometimes you _really_ need them. For those cases you
+can use the following 3 slots to create, rollback, and/or commit transactions towards your underlaying database.
+
+* __[mssql.transaction.create]__ - Creates a new database transaction
+* __[mssql.transaction.commit]__ - Commits an existing open transaction
+* __[mssql.transaction.rollback]__ - Rolls back an existing open transaction
+
+**Notice** - The default logic for a database transaction, is that unless it's _explicitly committed_
+before leaving scope, it will roll back by default. Below is an example of a transaction that will
+rollback, since it's not explicitly commited before leaving scope.
+
+```
+mssql.connect:northwind
+   mssql.transaction.create
+      mssql.execute:delete from customers
+
+      /*
+       * If you uncomment the line below, by removing the initial
+       * "." (DON'T!) - Then the transaction will be COMMITTED.
+       */
+      .mssql.transaction.commit
+
+mssql.connect:northwind
+
+   /*
+    * Notice, this still returns items, since
+    * transaction was implicitly rolled back above.
+    */
+   mssql.scalar:select count(*) from customers
+```
+
+**Notice** - A transaction will follow your connection, implying to count items
+after transaction has been rolled back, we'll need a _new_ connection, as the
+above example illustrates.
 
 ## License
 
