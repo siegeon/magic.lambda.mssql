@@ -44,9 +44,8 @@ namespace magic.lambda.mssql.tests
    where
       and
          jo-dude:int:5
-         like
-            foo-bar:howdy%");
-            Assert.Equal("select * from \"SomeTable\" where (\"jo-dude\" = @0 and \"foo-bar\" like @1) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
+         foo-bar.like:howdy%");
+            Assert.Equal("select * from \"SomeTable\" where \"jo-dude\" = @0 and \"foo-bar\" like @1 order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Equal(2, lambda.Children.First().Children.Count());
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal(5, lambda.Children.First().Children.First().Value);
@@ -64,7 +63,7 @@ namespace magic.lambda.mssql.tests
       or
          jo-dude:int:5
          foo:bar");
-            Assert.Equal("select * from \"SomeTable\" where (\"jo-dude\" = @0 or \"foo\" = @1) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" where \"jo-dude\" = @0 or \"foo\" = @1 order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Equal(2, lambda.Children.First().Children.Count());
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal(5, lambda.Children.First().Children.First().Value);
@@ -86,7 +85,7 @@ namespace magic.lambda.mssql.tests
          or
             jo:decimal:5
             ho:bar");
-            Assert.Equal("select * from \"SomeTable\" where ((\"jo-dude\" = @0 or \"foo\" = @1) and (\"jo\" = @2 or \"ho\" = @3)) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" where (\"jo-dude\" = @0 or \"foo\" = @1) and (\"jo\" = @2 or \"ho\" = @3) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Equal(4, lambda.Children.First().Children.Count());
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal(5, lambda.Children.First().Children.First().Value);
@@ -141,9 +140,8 @@ namespace magic.lambda.mssql.tests
    table:SomeTable
    where
       and
-         >
-            id:int:3");
-            Assert.Equal("select * from \"SomeTable\" where (\"id\" > @0) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
+         id.mt:int:3");
+            Assert.Equal("select * from \"SomeTable\" where \"id\" > @0 order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Single(lambda.Children.First().Children);
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal(3, lambda.Children.First().Children.First().Value);
@@ -158,7 +156,7 @@ namespace magic.lambda.mssql.tests
    where
       and
          id.mt:int:3");
-            Assert.Equal("select * from \"SomeTable\" where (\"id\" > @0) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" where \"id\" > @0 order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Single(lambda.Children.First().Children);
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal(3, lambda.Children.First().Children.First().Value);
@@ -175,8 +173,10 @@ namespace magic.lambda.mssql.tests
       Howdy
    where
       and
-         Foo.in:5,7");
-            Assert.Equal("select \"Foo\",\"Howdy\" from \"SomeTable\" where (\"Foo\" in (@0,@1)) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
+         Foo.in
+            .:long:5
+            .:long:7");
+            Assert.Equal("select \"Foo\",\"Howdy\" from \"SomeTable\" where \"Foo\" in (@0,@1) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Equal(2, lambda.Children.First().Children.Count());
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal("@1", lambda.Children.First().Children.Skip(1).First().Name);
@@ -195,16 +195,15 @@ namespace magic.lambda.mssql.tests
       Howdy
    where
       and
-         in
-            Foo
-               :int:5
-               :int:7");
-			Assert.Equal("select \"Foo\",\"Howdy\" from \"SomeTable\" where (\"Foo\" in (@0,@1)) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
+         Foo.in
+            :int:5
+            :int:7");
+			Assert.Equal("select \"Foo\",\"Howdy\" from \"SomeTable\" where \"Foo\" in (@0,@1) order by (select null) offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
 			Assert.Equal(2, lambda.Children.First().Children.Count());
 			Assert.Equal("@0", lambda.Children.First().Children.First().Name);
 			Assert.Equal("@1", lambda.Children.First().Children.Skip(1).First().Name);
-			Assert.Equal(5L, lambda.Children.First().Children.First().Value);
-			Assert.Equal(7L, lambda.Children.First().Children.Skip(1).First().Value);
+			Assert.Equal(5, lambda.Children.First().Children.First().Value);
+			Assert.Equal(7, lambda.Children.First().Children.Skip(1).First().Value);
 		}
 
 		[Fact]
@@ -226,9 +225,8 @@ namespace magic.lambda.mssql.tests
    where
       and
          jo-dude:int:5
-         like
-            foo-bar:howdy%");
-            Assert.Equal("delete from \"SomeTable\" where (\"jo-dude\" = @0 and \"foo-bar\" like @1)", lambda.Children.First().Value);
+         foo-bar.like:howdy%");
+            Assert.Equal("delete from \"SomeTable\" where \"jo-dude\" = @0 and \"foo-bar\" like @1", lambda.Children.First().Value);
             Assert.Equal(2, lambda.Children.First().Children.Count());
             Assert.Equal("@0", lambda.Children.First().Children.First().Name);
             Assert.Equal(5, lambda.Children.First().Children.First().Value);
@@ -313,7 +311,7 @@ namespace magic.lambda.mssql.tests
    values
       foo1:bar1
       foo2:int:5");
-            Assert.Equal("update \"SomeTable\" set \"foo1\" = @v0, \"foo2\" = @v1 where (\"id\" = @0)", lambda.Children.First().Value);
+            Assert.Equal("update \"SomeTable\" set \"foo1\" = @v0, \"foo2\" = @v1 where \"id\" = @0", lambda.Children.First().Value);
             Assert.Equal(3, lambda.Children.First().Children.Count());
             Assert.Equal("@v0", lambda.Children.First().Children.First().Name);
             Assert.Equal("bar1", lambda.Children.First().Children.First().Value);
@@ -335,7 +333,7 @@ namespace magic.lambda.mssql.tests
    values
       foo1:bar1
       foo2:int:5");
-            Assert.Equal("update \"SomeTable\" set \"foo1\" = @v0, \"foo2\" = @v1 where (\"id\" = @0)", lambda.Children.First().Value);
+            Assert.Equal("update \"SomeTable\" set \"foo1\" = @v0, \"foo2\" = @v1 where \"id\" = @0", lambda.Children.First().Value);
             Assert.Equal(3, lambda.Children.First().Children.Count());
             Assert.Equal("@v0", lambda.Children.First().Children.First().Name);
             Assert.Equal("bar1", lambda.Children.First().Children.First().Value);
@@ -357,7 +355,7 @@ namespace magic.lambda.mssql.tests
    values
       foo1:bar1
       foo2");
-            Assert.Equal("update \"SomeTable\" set \"foo1\" = @v0, \"foo2\" = null where (\"id\" = @0)", lambda.Children.First().Value);
+            Assert.Equal("update \"SomeTable\" set \"foo1\" = @v0, \"foo2\" = null where \"id\" = @0", lambda.Children.First().Value);
             Assert.Equal(2, lambda.Children.First().Children.Count());
             Assert.Equal("@v0", lambda.Children.First().Children.First().Name);
             Assert.Equal("bar1", lambda.Children.First().Children.First().Value);

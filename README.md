@@ -23,122 +23,51 @@ declare your own SQL statements, to be executed towards a MS SQL database. Slots
 
 Most of the above slots also have async (wait.) overloads.
 
-## mssql.read
+**Notice** - If you use any of the CRUD slots from above, the whole idea is that you can polymorphistically use the
+same lambda object, towards any of the underlaying database types, and the correct specific syntax for your particular
+database vendor's SQL syntax will be automatically generated.
 
-This event allows you to read records in CRUD style, implying you don't need to create your own SQL, but the slot will automatically
-create your SQL for you, avoding things such as SQL insertion attacks automatically for you, etc.
+This allows you to transparently use the same lambda object, towards any of the supported database types, without
+having to change it in any ways.
+
+## [mssql.create], [mssql.read], [mssql.update] and [mssql.delete]
+
+All of these slots have the _exact same syntax_ for all supported data adapters, which you can read about in the
+link below. Just make sure you start out your CRUD slot invocations with `mssql.` instead of `sql.` to use
+them towards a Microsoft SQL Server database. You will also need to open a database connection before you invoke these slots,
+unless you're only interested in generating its specific SQL command text, and not actually execute the SQL.
+
+* [Magic Data Common](https://github.com/polterguy/magic.lambda.mysql)
+
+## [mssql.connect]
+
+This slot will open a database connection for you. You can pass in a complete connection string (not recommended),
+or only the database name if you wish. If you pass in only the database name, the generic connection string for Microsoft
+SQL Server from your _"appsettings.json"_ file will be used, substituting its `{database}` parts with the database of
+your choice.
+
+Inside of this, which actually is a lambda **[eval]** invocation, you can use any of the other slots, requiring
+an existing and open database connection to function. You can see an example below.
 
 ```
-/*
- * Connecting to Northwind database
- */
-mssql.connect:[Northwind]
-
-   /*
-    * Selecting only ContactName from Customers table
-    */
+mssql.connect:northwind
    mssql.read
-      table:Customers
-      columns
-         ContactName
+      table:customers
 ```
 
-Notice, if you want to inspect the SQL that is generated, you can pass in **[generate]** and set its value to boolean true.
+## [mssql.select]
 
-## Conditional select, update, delete
-
-The __[mssql.delete]__, __[mssql.read]__ and __[mssql.update]__ slots can be given relatively complex where conditions, where you apply
-conditions to these as a __[where]__ node. This will become a part of the SQL _"where"_ clause, where each condition by default will
-be _"AND'ed"_ together, but this too can be changed by adding YALOA that declares your logical operator. For instance, to select
-all records that have a `value` of _5_ and an `content` of _"foo"_ you can do something like the following
+This slot allows you to pass in any arbitrary SQL you wish, and it will evaluate to a `DataReader`, and return
+all records as a lambda object. You can find an example below.
 
 ```
-mssql.read
-   table:SomeTable
-   where
-      value:int:5
-      content:foo
+mysql.connect:northwind
+   mysql.select:select top 100 * from customers
 ```
 
-The above invocation will return all records that have _both_ a _"value"_ of _"5"_, and a _"content"_ of _"foo"_. You can optionally apply
-a logical operator to it, to change it to becoming an _"OR"_ SQL where clause, by adding an _"OR"_ node in between the __[where]__ and
-the values, such as the following illustrates.
-
-```
-mssql.read
-   table:SomeTable
-   where
-      or
-         value:int:5
-         content:foo
-```
-
-The above will return all records that have _either_ a value of _"5"_ OR a _"content"_ of _"foo"_. To understand how the above logic works,
-it might be useful to play around with the _"Evaluator"_ in the Magic frontend, and make sure you add __[generate]__ and set its value
-to boolean _"true"_, which will return the resulting SQL, instead of actually evaluating the SQL.
-
-Both select, delete and read slots have the same logic when it comes to creating _"where"_ clauses and attaching these to your resulting SQL.
-
-## More complex operators
-
-In addition to the above, you can also supply any operators, in two ways in fact, which becomes your comparison operators. Below is its most
-simple example.
-
-```
-mssql.read
-   table:SomeTable
-   where
-      and
-         !=
-            value:int:5
-            content:foo
-```
-
-The above will return all records which does _not_ have a _"value"_ of 5, nor a _"content"_ of _"foo"_. Supported operators are as follows.
-
-* !=
-* <
-* \>
-* \>=
-* <=
-* =
-* like
-
-In addition to the above operators, you can supply an _"in"_ operator, which is structurally different, though similar in logic.
-Below is an example.
-
-```
-mssql.read
-   table:SomeTable
-   where
-      or
-         in
-            value
-               :long:5
-               :long:7
-```
-
-The above will return all records where its _"value_" is either equal to 5 or 7. You can create as many _"in"_ values as you wish, but corrrently
-only integer (long, int types of columns) are supported.
-
-All operators are also supported as _"column-name.operator-name"_ type of arguments, such as the following illustrates.
-
-```
-mssql.read
-   table:SomeTable
-   where
-      and
-         foo1.like:query%
-         foo2.mt:int:5
-         foo3.lt:int:5
-         foo4.mteq:int:5
-         foo5.lteq:int:5
-         foo6.neq:int:5
-         foo7.eq:int:5
-```
-
-_"eq"_ implies _"equals"_, _"lt"_ implies _"less than"_, _"mt"_ implies _"more than"_, _"neq"_ implies _"not equal to"_, etc. All combinations
-of previous said words, becomes the equivalent combinatory operator.
+Notice, this slot requires Microsoft SQL server syntax type of SQL, and will not in any ways transpile towards
+your specific underlaying database type. If you can, you should rather use **[mssql.read]** for instance, to
+avoid tying yourself down to a specific database vendor's SQL dialect.
 
 ## License
 
