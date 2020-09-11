@@ -7,10 +7,10 @@
     <Authors>Thomas Hansen</Authors>
     <Company>Thomas Hansen</Company>
     <Copyright>Thomas Hansen, thomas@gaiasoul.com</Copyright>
-    <Description>MS SQL Server helper slots for Magic allowing you to easily connect to an SQL Server database, and read, update, delete and insert into your database.</Description>
+    <Description>Microsoft SQL Server helper slots for Magic, allowing you to easily connect to an SQL Server database, and read, update, delete and insert into your database.</Description>
     <PackageProjectUrl>https://github.com/polterguy/magic.lambda.mssql</PackageProjectUrl>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>8.1.10</PackageVersion>
+    <PackageVersion>8.1.11</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/polterguy/magic.lambda.mssql.git</RepositoryUrl>
