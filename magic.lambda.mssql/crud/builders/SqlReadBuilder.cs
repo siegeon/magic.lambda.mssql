@@ -31,10 +31,10 @@ namespace magic.lambda.mssql.crud.builders
         /// Appends the "tail" parts of your SQL into the specified builder.
         /// </summary>
         /// <param name="builder">Builder where to put the tail.</param>
-        protected override void GetTail(StringBuilder builder)
+        protected override void AppendTail(StringBuilder builder)
         {
             // Getting [order].
-            GetOrderBy(builder);
+            AppendOrderBy(builder);
 
             var offsetNodes = Root.Children.Where(x => x.Name == "offset");
             if (offsetNodes.Any())
@@ -74,7 +74,7 @@ namespace magic.lambda.mssql.crud.builders
         /// Appends the default order by parts of the SQL statement.
         /// </summary>
         /// <param name="builder">Where to put the SQL.</param>
-        protected override void GetDefaultOrderBy(StringBuilder builder)
+        protected override void AppendDefaultOrderBy(StringBuilder builder)
         {
             builder.Append(" order by (select null)");
         }

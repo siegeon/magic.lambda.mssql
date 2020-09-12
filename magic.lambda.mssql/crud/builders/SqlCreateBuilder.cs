@@ -28,7 +28,7 @@ namespace magic.lambda.mssql.crud.builders
         /// Makes sure we can select the scope identity for inserted record.
         /// </summary>
         /// <param name="builder">Where to put our SQL.</param>
-        protected override void GetTail(StringBuilder builder)
+        protected override void AppendTail(StringBuilder builder)
         {
             builder.Append("; select scope_identity();");
         }
