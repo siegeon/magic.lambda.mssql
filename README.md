@@ -1,5 +1,5 @@
 
-# Magic Lambda MS SQL Server data adapters
+# Magic Lambda MS SQL
 
 [![Build status](https://travis-ci.com/polterguy/magic.lambda.mssql.svg?master)](https://travis-ci.com/polterguy/magic.lambda.mssql)
 
