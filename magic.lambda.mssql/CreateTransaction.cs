@@ -15,7 +15,6 @@ namespace magic.lambda.mysql
     /// [mssql.transaction.create] slot for creating a new MS SQL database transaction.
     /// </summary>
     [Slot(Name = "mssql.transaction.create")]
-    [Slot(Name = "wait.mssql.transaction.create")]
     public class CreateTransaction : ISlot, ISlotAsync
     {
         /// <summary>
@@ -42,7 +41,7 @@ namespace magic.lambda.mysql
             await signaler.ScopeAsync(
                 "mssql.transaction",
                 new Transaction(signaler, signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection),
-                async () => await signaler.SignalAsync("wait.eval", input));
+                async () => await signaler.SignalAsync("eval", input));
         }
     }
 }

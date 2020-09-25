@@ -18,7 +18,6 @@ namespace magic.lambda.mssql.crud
     /// [mssql.create] slot for creating a new record in some table.
     /// </summary>
     [Slot(Name = "mssql.create")]
-    [Slot(Name = "wait.mssql.create")]
     public class Create : ISlot, ISlotAsync
     {
         /// <summary>

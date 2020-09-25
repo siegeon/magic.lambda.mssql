@@ -20,7 +20,6 @@ namespace magic.lambda.mssql
     /// This SQL cannot be executed in Microsoft SQL server using a simple SqlCommand.
     /// </summary>
     [Slot(Name = "mssql.execute-batch")]
-    [Slot(Name = "wait.mssql.execute-batch")]
     public class ExecuteBatch : ISlot, ISlotAsync
     {
         /// <summary>

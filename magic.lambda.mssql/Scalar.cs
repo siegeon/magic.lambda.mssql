@@ -15,7 +15,6 @@ namespace magic.lambda.mssql
     /// [mssql.scalar] slot, for executing a scalar type of SQL.
     /// </summary>
     [Slot(Name = "mssql.scalar")]
-    [Slot(Name = "wait.mssql.scalar")]
     public class Scalar : ISlot, ISlotAsync
     {
         /// <summary>
