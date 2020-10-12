@@ -66,6 +66,29 @@ mssql.connect:bikestores
       limit:250
 ```
 
+The above invocation should result in something resembling the following.
+
+```
+mssql.connect
+   mssql.read
+      .
+         id:int:21
+         name:Electra Cruiser 1 (24-Inch) - 2016
+         category:Children Bicycles
+      .
+         id:int:22
+         name:Electra Girl's Hawaii 1 (16-inch) - 2015/2016
+         category:Children Bicycles
+      .
+         id:int:23
+         name:Electra Girl's Hawaii 1 (20-inch) - 2015/2016
+         category:Children Bicycles
+      .
+         id:int:83
+         name:Trek Boy's Kickster - 2015/2017
+         category:Children Bicycles
+```
+
 ## [mssql.connect]
 
 This slot will open a database connection for you. You can pass in a complete connection string (not recommended),
