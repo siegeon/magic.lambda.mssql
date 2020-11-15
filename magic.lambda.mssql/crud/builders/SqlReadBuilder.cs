@@ -33,7 +33,8 @@ namespace magic.lambda.mssql.crud.builders
         /// <param name="builder">Builder where to put the tail.</param>
         protected override void AppendTail(StringBuilder builder)
         {
-            // Getting [order].
+            // Order counts!
+            AppendGroupBy(builder);
             AppendOrderBy(builder);
 
             var offsetNodes = Root.Children.Where(x => x.Name == "offset");
