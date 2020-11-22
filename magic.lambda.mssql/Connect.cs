@@ -3,11 +3,10 @@
  * See the enclosed LICENSE file for details.
  */
 
-using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using magic.node;
-using magic.node.extensions;
+using magic.data.common;
 using magic.signals.contracts;
 using magic.lambda.mssql.helpers;
 
@@ -37,7 +36,12 @@ namespace magic.lambda.mssql
         /// <param name="input">Arguments to your slot.</param>
         public void Signal(ISignaler signaler, Node input)
         {
-            using (var connection = new SqlConnectionWrapper(GetConnectionString(input)))
+            using (var connection = new SqlConnectionWrapper(
+                Executor.GetConnectionString(
+                    input,
+                    "mssql",
+                    "master",
+                    _configuration)))
             {
                 signaler.Scope(
                     "mssql.connect",
@@ -54,7 +58,12 @@ namespace magic.lambda.mssql
         /// <returns>An awaitable task.</returns>
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
-            using (var connection = new SqlConnectionWrapper(GetConnectionString(input)))
+            using (var connection = new SqlConnectionWrapper(
+                Executor.GetConnectionString(
+                    input,
+                    "mssql",
+                    "master",
+                    _configuration)))
             {
                 await signaler.ScopeAsync(
                     "mssql.connect",
@@ -63,33 +72,5 @@ namespace magic.lambda.mssql
                 input.Value = null;
             }
         }
-
-        #region [ -- Private helper methods -- ]
-
-        string GetConnectionString(Node input)
-        {
-            var connectionString = input.Value == null ? null : input.GetEx<string>();
-
-            // Checking if this is a "generic connection string".
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                var generic = _configuration["magic:databases:mssql:generic"];
-                connectionString = generic.Replace("{database}", "master");
-            }
-            else if (connectionString.StartsWith("[", StringComparison.InvariantCulture) &&
-                connectionString.EndsWith("]", StringComparison.InvariantCulture))
-            {
-                var generic = _configuration["magic:databases:mssql:generic"];
-                connectionString = generic.Replace("{database}", connectionString.Substring(1, connectionString.Length - 2));
-            }
-            else if (!connectionString.Contains(";"))
-            {
-                var generic = _configuration["magic:databases:mssql:generic"];
-                connectionString = generic.Replace("{database}", connectionString);
-            }
-            return connectionString;
-        }
-
-        #endregion
     }
 }
