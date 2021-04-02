@@ -104,7 +104,7 @@ namespace magic.lambda.mssql.tests
    generate:bool:true
    table:SomeTable
    order:foo");
-            Assert.Equal("select * from \"SomeTable\" order by \"foo\" offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
+            Assert.Equal("select * from \"SomeTable\" order by \"foo\" asc offset 0 rows fetch next 25 rows only", lambda.Children.First().Value);
             Assert.Empty(lambda.Children.First().Children);
         }
 
