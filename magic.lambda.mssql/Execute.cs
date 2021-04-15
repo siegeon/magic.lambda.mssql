@@ -28,7 +28,7 @@ namespace magic.lambda.mssql
                 input,
                 signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
                 signaler.Peek<Transaction>("mssql.transaction"),
-                (cmd) =>
+                (cmd, _) =>
             {
                 input.Value = cmd.ExecuteNonQuery();
             });
@@ -46,7 +46,7 @@ namespace magic.lambda.mssql
                 input,
                 signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
                 signaler.Peek<Transaction>("mssql.transaction"),
-                async (cmd) =>
+                async (cmd, _) =>
             {
                 input.Value = await cmd.ExecuteNonQueryAsync();
             });

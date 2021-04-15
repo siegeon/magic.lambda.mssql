@@ -35,7 +35,7 @@ namespace magic.lambda.mssql.crud
                 exe,
                 signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
                 signaler.Peek<com.Transaction>("mssql.transaction"),
-                (cmd) =>
+                (cmd, _) =>
             {
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -72,7 +72,7 @@ namespace magic.lambda.mssql.crud
                 exe,
                 signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
                 signaler.Peek<com.Transaction>("mssql.transaction"),
-                async (cmd) =>
+                async (cmd, _) =>
             {
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {

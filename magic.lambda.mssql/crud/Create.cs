@@ -52,7 +52,7 @@ namespace magic.lambda.mssql.crud
                 exe,
                 signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
                 signaler.Peek<com.Transaction>("mssql.transaction"),
-                (cmd) =>
+                (cmd, _) =>
             {
                 /*
                  * Notice, create SQL returns last inserted ID, but only
@@ -104,7 +104,7 @@ namespace magic.lambda.mssql.crud
                 exe,
                 signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
                 signaler.Peek<com.Transaction>("mssql.transaction"),
-                async (cmd) =>
+                async (cmd, _) =>
             {
                 /*
                  * Notice, create SQL returns last inserted ID, but only
