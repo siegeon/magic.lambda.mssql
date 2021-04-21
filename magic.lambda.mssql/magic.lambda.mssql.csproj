@@ -10,7 +10,7 @@
     <Description>Microsoft SQL Server helper slots for Magic, allowing you to easily connect to an SQL Server database, and read, update, delete and insert into your database. To use package go to https://polterguy.github.io</Description>
     <PackageProjectUrl>https://github.com/polterguy/magic.lambda.mssql</PackageProjectUrl>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>9.1.1</PackageVersion>
+    <PackageVersion>9.1.4</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/polterguy/magic.lambda.mssql.git</RepositoryUrl>
@@ -40,7 +40,7 @@
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-    <PackageReference Include="magic.data.common" Version="9.1.0" />
+    <PackageReference Include="magic.data.common" Version="9.1.4" />
   </ItemGroup>
 
 </Project>
