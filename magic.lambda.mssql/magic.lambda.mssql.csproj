@@ -5,8 +5,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>magic.lambda.mssql</PackageId>
     <Authors>Thomas Hansen</Authors>
-    <Company>Thomas Hansen</Company>
-    <Copyright>Thomas Hansen, thomas@servergardens.com</Copyright>
+    <Company>Aista, Ltd</Company>
+    <Copyright>Aista, Ltd, thomas@servergardens.com</Copyright>
     <Description>Microsoft SQL Server helper slots for Magic, allowing you to easily connect to an SQL Server database, and read, update, delete and insert into your database. To use package go to https://polterguy.github.io</Description>
     <PackageProjectUrl>https://github.com/polterguy/magic.lambda.mssql</PackageProjectUrl>
     <PackOnBuild>true</PackOnBuild>
@@ -14,7 +14,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/polterguy/magic.lambda.mssql.git</RepositoryUrl>
-    <PackageTags>mssql, sql, data adapter</PackageTags>
+    <PackageTags>mssql, sql, data adapter, sql server, hyperlambda, orm, dal</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
