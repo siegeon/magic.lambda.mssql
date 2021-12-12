@@ -17,8 +17,7 @@ namespace magic.lambda.mssql.crud.builders
         /// Creates an instance of your type.
         /// </summary>
         /// <param name="node">Arguments to build your SQL from.</param>
-        /// <param name="signaler">Signaler used to invoke the original slot.</param>
-        public SqlDeleteBuilder(Node node, ISignaler signaler)
+        public SqlDeleteBuilder(Node node)
             : base(node, "\"")
         { }
     }

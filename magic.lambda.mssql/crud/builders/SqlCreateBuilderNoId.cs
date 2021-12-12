@@ -21,8 +21,7 @@ namespace magic.lambda.mssql.crud.builders
         /// Creates a new instance of your class.
         /// </summary>
         /// <param name="node">Arguments used to semantically build your SQL.</param>
-        /// <param name="signaler">Signaler used to invoke the original slot.</param>
-        public SqlCreateBuilderNoId(Node node, ISignaler signaler)
+        public SqlCreateBuilderNoId(Node node)
             : base(node, "\"")
         { }
     }

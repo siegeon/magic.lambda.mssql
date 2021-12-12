@@ -17,8 +17,7 @@ namespace magic.lambda.mssql.crud.builders
         /// Creates an instance of your type.
         /// </summary>
         /// <param name="node">Arguments to create your statement from.</param>
-        /// <param name="signaler">Signaler used to invoke the original slot.</param>
-        public SqlUpdateBuilder(Node node, ISignaler signaler)
+        public SqlUpdateBuilder(Node node)
             : base(node, "\"")
         { }
     }

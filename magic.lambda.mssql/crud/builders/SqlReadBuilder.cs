@@ -20,8 +20,7 @@ namespace magic.lambda.mssql.crud.builders
         /// Creates en instance of your type.
         /// </summary>
         /// <param name="node">Arguments to create your SQL from.</param>
-        /// <param name="signaler">Signaler used to invoke your original slot.</param>
-        public SqlReadBuilder(Node node, ISignaler signaler)
+        public SqlReadBuilder(Node node)
             : base(node, "\"")
         { }
 
