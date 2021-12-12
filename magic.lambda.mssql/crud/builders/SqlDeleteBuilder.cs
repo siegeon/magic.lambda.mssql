@@ -4,14 +4,14 @@
 
 using magic.node;
 using magic.signals.contracts;
-using com = magic.data.common.builders;
+using build = magic.data.common.builders;
 
 namespace magic.lambda.mssql.crud.builders
 {
     /// <summary>
     /// Builder for creating a delete type of MS SQL Server statement.
     /// </summary>
-    public class SqlDeleteBuilder : com.SqlDeleteBuilder
+    public class SqlDeleteBuilder : build.SqlDeleteBuilder
     {
         /// <summary>
         /// Creates an instance of your type.

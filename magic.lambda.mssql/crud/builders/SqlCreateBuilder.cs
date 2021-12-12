@@ -5,14 +5,14 @@
 using System.Text;
 using magic.node;
 using magic.signals.contracts;
-using com = magic.data.common.builders;
+using build = magic.data.common.builders;
 
 namespace magic.lambda.mssql.crud.builders
 {
     /// <summary>
     /// Create SQL type of builder for MS SQL Server types of statements.
     /// </summary>
-    public class SqlCreateBuilder : com.SqlCreateBuilder
+    public class SqlCreateBuilder : build.SqlCreateBuilder
     {
         /// <summary>
         /// Creates a new instance of your class.

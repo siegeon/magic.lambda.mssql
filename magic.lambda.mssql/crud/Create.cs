@@ -8,7 +8,7 @@ using magic.node;
 using magic.node.extensions;
 using magic.signals.contracts;
 using magic.lambda.mssql.helpers;
-using com = magic.data.common.helpers;
+using help = magic.data.common.helpers;
 using magic.lambda.mssql.crud.builders;
 
 namespace magic.lambda.mssql.crud
@@ -35,8 +35,8 @@ namespace magic.lambda.mssql.crud
 
             // Parsing and creating SQL.
             var exe = returnId ?
-                com.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
-                com.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
+                help.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
+                help.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
 
             /*
              * If the parsing process doesn't return a node, we're not supposed
@@ -47,10 +47,10 @@ namespace magic.lambda.mssql.crud
                 return;
 
             // Executing SQL, now parametrized.
-            com.Executor.Execute(
+            help.Executor.Execute(
                 exe,
                 signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
-                signaler.Peek<com.Transaction>("mssql.transaction"),
+                signaler.Peek<help.Transaction>("mssql.transaction"),
                 (cmd, _) =>
             {
                 /*
@@ -87,8 +87,8 @@ namespace magic.lambda.mssql.crud
 
             // Parsing and creating SQL.
             var exe = returnId ?
-                com.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
-                com.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
+                help.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
+                help.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
 
             /*
              * If the parsing process doesn't return a node, we're not supposed
@@ -99,10 +99,10 @@ namespace magic.lambda.mssql.crud
                 return;
 
             // Executing SQL, now parametrized.
-            await com.Executor.ExecuteAsync(
+            await help.Executor.ExecuteAsync(
                 exe,
                 signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
-                signaler.Peek<com.Transaction>("mssql.transaction"),
+                signaler.Peek<help.Transaction>("mssql.transaction"),
                 async (cmd, _) =>
             {
                 /*

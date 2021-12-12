@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using magic.node;
 using magic.signals.contracts;
 using magic.lambda.mssql.helpers;
-using com = magic.data.common.helpers;
+using help = magic.data.common.helpers;
 using magic.lambda.mssql.crud.builders;
 
 namespace magic.lambda.mssql.crud
@@ -25,15 +25,15 @@ namespace magic.lambda.mssql.crud
         public void Signal(ISignaler signaler, Node input)
         {
             // Parsing and creating SQL.
-            var exe = com.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
+            var exe = help.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
             if (exe == null)
                 return;
 
             // Executing SQL, now parametrized.
-            com.Executor.Execute(
+            help.Executor.Execute(
                 exe,
                 signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
-                signaler.Peek<com.Transaction>("mssql.transaction"),
+                signaler.Peek<help.Transaction>("mssql.transaction"),
                 (cmd, _) =>
             {
                 input.Value = cmd.ExecuteNonQuery();
@@ -50,15 +50,15 @@ namespace magic.lambda.mssql.crud
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
             // Parsing and creating SQL.
-            var exe = com.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
+            var exe = help.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
             if (exe == null)
                 return;
 
             // Executing SQL, now parametrized.
-            await com.Executor.ExecuteAsync(
+            await help.Executor.ExecuteAsync(
                 exe,
                 signaler.Peek<SqlConnectionWrapper>("mssql.connect").Connection,
-                signaler.Peek<com.Transaction>("mssql.transaction"),
+                signaler.Peek<help.Transaction>("mssql.transaction"),
                 async (cmd, _) =>
             {
                 input.Value = await cmd.ExecuteNonQueryAsync();

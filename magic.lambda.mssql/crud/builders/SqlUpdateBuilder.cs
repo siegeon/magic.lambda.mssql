@@ -4,14 +4,14 @@
 
 using magic.node;
 using magic.signals.contracts;
-using com = magic.data.common.builders;
+using build = magic.data.common.builders;
 
 namespace magic.lambda.mssql.crud.builders
 {
     /// <summary>
     /// Builder to create an update type of MS SQL Server statement.
     /// </summary>
-    public class SqlUpdateBuilder : com.SqlUpdateBuilder
+    public class SqlUpdateBuilder : build.SqlUpdateBuilder
     {
         /// <summary>
         /// Creates an instance of your type.

@@ -7,14 +7,14 @@ using System.Text;
 using magic.node;
 using magic.node.extensions;
 using magic.signals.contracts;
-using com = magic.data.common.builders;
+using build = magic.data.common.builders;
 
 namespace magic.lambda.mssql.crud.builders
 {
     /// <summary>
     /// Builder for creating a read type of MS SQL Server statement,
     /// </summary>
-    public class SqlReadBuilder : com.SqlReadBuilder
+    public class SqlReadBuilder : build.SqlReadBuilder
     {
         /// <summary>
         /// Creates en instance of your type.

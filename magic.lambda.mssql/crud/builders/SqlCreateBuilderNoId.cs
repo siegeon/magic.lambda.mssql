@@ -4,7 +4,7 @@
 
 using magic.node;
 using magic.signals.contracts;
-using com = magic.data.common.builders;
+using build = magic.data.common.builders;
 
 namespace magic.lambda.mssql.crud.builders
 {
@@ -15,7 +15,7 @@ namespace magic.lambda.mssql.crud.builders
     /// This is useful for times when you don't have auto_increment or generated
     /// IDs on your table.
     /// </summary>
-    public class SqlCreateBuilderNoId : com.SqlCreateBuilder
+    public class SqlCreateBuilderNoId : build.SqlCreateBuilder
     {
         /// <summary>
         /// Creates a new instance of your class.
