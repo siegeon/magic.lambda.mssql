@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using magic.node;
 using magic.signals.contracts;
 using magic.lambda.mssql.helpers;
-using help = magic.data.common.helpers;
 using magic.lambda.mssql.crud.builders;
+using help = magic.data.common.helpers;
+using build = magic.data.common.builders;
 
 namespace magic.lambda.mssql.crud
 {
@@ -25,7 +26,7 @@ namespace magic.lambda.mssql.crud
         public void Signal(ISignaler signaler, Node input)
         {
             // Parsing and creating SQL.
-            var exe = help.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
+            var exe = build.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
             if (exe == null)
                 return;
 
@@ -50,7 +51,7 @@ namespace magic.lambda.mssql.crud
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
             // Parsing and creating SQL.
-            var exe = help.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
+            var exe = build.SqlBuilder.Parse<SqlDeleteBuilder>(signaler, input);
             if (exe == null)
                 return;
 
