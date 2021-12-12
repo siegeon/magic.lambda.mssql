@@ -3,9 +3,9 @@
  */
 
 using magic.node;
-using magic.data.common;
 using magic.signals.contracts;
 using System.Threading.Tasks;
+using magic.data.common.helpers;
 using magic.lambda.mssql.helpers;
 
 namespace magic.lambda.mysql

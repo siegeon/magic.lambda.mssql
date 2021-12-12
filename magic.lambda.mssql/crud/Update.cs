@@ -4,9 +4,9 @@
 
 using System.Threading.Tasks;
 using magic.node;
-using com = magic.data.common;
 using magic.signals.contracts;
 using magic.lambda.mssql.helpers;
+using com = magic.data.common.helpers;
 using magic.lambda.mssql.crud.builders;
 
 namespace magic.lambda.mssql.crud
@@ -25,7 +25,7 @@ namespace magic.lambda.mssql.crud
         public void Signal(ISignaler signaler, Node input)
         {
             // Parsing and creating SQL.
-            var exe = com.helpers.SqlBuilder.Parse<SqlUpdateBuilder>(signaler, input);
+            var exe = com.SqlBuilder.Parse<SqlUpdateBuilder>(signaler, input);
             if (exe == null)
                 return;
 
@@ -50,7 +50,7 @@ namespace magic.lambda.mssql.crud
         public async Task SignalAsync(ISignaler signaler, Node input)
         {
             // Parsing and creating SQL.
-            var exe = com.helpers.SqlBuilder.Parse<SqlUpdateBuilder>(signaler, input);
+            var exe = com.SqlBuilder.Parse<SqlUpdateBuilder>(signaler, input);
             if (exe == null)
                 return;
 

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using magic.node;
 using magic.node.extensions;
-using com = magic.data.common;
 using magic.signals.contracts;
 using magic.lambda.mssql.helpers;
+using com = magic.data.common.helpers;
 using magic.lambda.mssql.crud.builders;
 
 namespace magic.lambda.mssql.crud
@@ -35,8 +35,8 @@ namespace magic.lambda.mssql.crud
 
             // Parsing and creating SQL.
             var exe = returnId ?
-                com.helpers.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
-                com.helpers.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
+                com.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
+                com.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
 
             /*
              * If the parsing process doesn't return a node, we're not supposed
@@ -87,8 +87,8 @@ namespace magic.lambda.mssql.crud
 
             // Parsing and creating SQL.
             var exe = returnId ?
-                com.helpers.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
-                com.helpers.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
+                com.SqlBuilder.Parse<SqlCreateBuilder>(signaler, input) :
+                com.SqlBuilder.Parse<SqlCreateBuilderNoId>(signaler, input);
 
             /*
              * If the parsing process doesn't return a node, we're not supposed
