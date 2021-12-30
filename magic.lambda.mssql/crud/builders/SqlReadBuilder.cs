@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using magic.node;
 using magic.node.extensions;
-using magic.signals.contracts;
 using build = magic.data.common.builders;
 
 namespace magic.lambda.mssql.crud.builders
